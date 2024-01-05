@@ -1,3 +1,4 @@
+from datetime import datetime
 import uuid
 from fastapi import FastAPI, HTTPException, status, Security
 from pydantic import BaseModel
@@ -32,7 +33,7 @@ def read_root():
 
 @app.post("/generate")
 def generate_pdf(item:PayLoad, api_key:str=Security(get_api_key)):
-    file_name = '{}{:-%Y%m%d%H%M%S}.pdf'.format(str(uuid.uuid4().hex), datetime.now())
+    file_name = '{}{:-%Y%m%d%H%M%S}.tmp.pdf'.format(str(uuid.uuid4().hex), datetime.now())
     pdfkit.from_string(item.htmlContent, file_name)
     return FileResponse(file_name)
     
